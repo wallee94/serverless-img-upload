@@ -12,11 +12,6 @@ def hello_world():
     return render_template('index.html')
 
 
-@app.route('/json/')
-def get_json():
-    return jsonify({'details': "this is a json"})
-
-
 @app.route('/presigned/')
 def generate_presigned_post():
     # Get the service client
