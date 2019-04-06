@@ -1,10 +1,10 @@
 # Serverless Image Upload
 
-This is an example app to show how to upload an image (o any file)
-to an s3 bucket from client-side, avoiding the duplicate
-process of uploading the image to a middleware server first.
+This is an example of how to upload an image (or any file)
+to an s3 bucket from client-side from a serverless app, avoiding 
+the process of uploading the image to a middleware server or function first.
 
-Here I use s3 presigned urls to give access to the client to write
+Here I use s3 presigned urls to give temporal access to the client to write
 to the bucket.
 
 Upload validations and url exchange are done using flask. Zappa 
