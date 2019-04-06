@@ -1,0 +1,4 @@
+set-aws-creds.sh
+venv/
+.idea/
+**/__pycache__/

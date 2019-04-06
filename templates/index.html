@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload to s3 client-side</title>
+    <style>
+        .error {
+            color: #ff2222;
+        }
+    </style>
+</head>
+<body>
+<h1>Upload Image</h1>
+<p>This is an example to upload an image to s3 from client side using presigned urls</p>
+<hr>
+<form id="image-form">
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="file">
+    <button>Save</button>
+    <span class="error" id="error"></span>
+</form>
+<script>
+    function uploadImage(responseJSON) {
+        console.log(responseJSON);
+        let formData = new FormData(document.getElementById('image-form'));
+        let file = formData.get('file'); // file must be the last key
+        formData.delete('file');
+        // add aws fields to the FormData
+        if (!responseJSON.fields || !responseJSON.url) {
+            return
+        }
+        for (let k in responseJSON.fields) {
+            if (!responseJSON.fields.hasOwnProperty(k)) {
+                continue
+            }
+            formData.append(k, responseJSON.fields[k]);
+        }
+        formData.append('file', file);
+        fetch(responseJSON.url, {
+            method: 'POST',
+            body: formData
+        }).then(function (response) {
+            let span = document.getElementById('error');
+            if (response.ok) {
+                span.innerText = 'Image successfully saves as: ' + responseJSON.fields.key;
+            } else {
+                let text = response.text().then(console.error);
+                span.innerText = 'An error occurred saving the image';
+            }
+        })
+    }
+
+    function handleFileUpload() {
+        let filename = document.getElementById('image').value;
+        let ext = filename.split('.').pop();
+        let getPresignedUrl = window.location.href + '/presigned/?ext=' + ext;
+        fetch(getPresignedUrl).then(function (response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                response.text().then(function (text) {
+                    document.getElementById('error').innerText = JSON.parse(text).details;
+                })
+            }
+            throw new Error('Network response was not ok.');
+        }).then(uploadImage);
+    }
+
+    document.getElementById('image-form').addEventListener('submit', function (evt) {
+        evt.preventDefault();
+        handleFileUpload();
+    })
+</script>
+</body>
+</html>
