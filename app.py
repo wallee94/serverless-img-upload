@@ -35,6 +35,7 @@ def generate_presigned_post():
     # Ensure that the ACL isn't changed and restrict the user to a length
     conditions = [
         {"acl": "public-read"},
+        ["content-length-range", 1, 5e6]  # from 1B to 5MB
     ]
 
     # Generate the POST attributes
