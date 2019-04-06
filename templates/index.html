@@ -7,18 +7,40 @@
         .error {
             color: #ff2222;
         }
+
+        .card {
+            width: 85%;
+            max-width: 800px;
+            background: white;
+            padding: 2em;
+            border-radius: 10px;
+        }
+
+        body {
+            background: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 5%;
+        }
     </style>
 </head>
 <body>
-<h1>Upload Image</h1>
-<p>This is an example to upload an image to s3 from client side using presigned urls</p>
-<hr>
-<form id="image-form">
-    <label for="image">Image:</label>
-    <input type="file" id="image" name="file">
-    <button>Save</button>
-</form>
-<div class="error" id="error"></div>
+<div class="container">
+    <div class="card">
+        <h1>Upload Image</h1>
+        <p>This is an example to upload an image to s3 from client side using presigned urls</p>
+        <hr>
+        <form id="image-form">
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="file">
+            <button>Save</button>
+            <div class="error" id="error"></div>
+        </form>
+    </div>
+</div>
 <script>
     function uploadImage(responseJSON) {
         console.log(responseJSON);
