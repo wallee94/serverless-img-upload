@@ -65,7 +65,7 @@
             let span = document.getElementById('error');
             if (response.ok) {
                 let bucketUrl = 'https://s3-us-west-1.amazonaws.com/flask-serverless-123/';
-                span.innerText = 'Image successfully saves in: ' + bucketUrl + responseJSON.fields.key;
+                span.innerText = 'Image successfully saved in: ' + bucketUrl + responseJSON.fields.key;
             } else {
                 let text = response.text().then(console.error);
                 span.innerText = 'An error occurred saving the image';
