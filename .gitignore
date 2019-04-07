@@ -1,4 +1,4 @@
-set-aws-creds.sh
+zappa-update
 venv/
 .idea/
 **/__pycache__/
