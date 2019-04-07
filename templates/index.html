@@ -5,6 +5,7 @@
     <title>Upload to s3 client-side</title>
     <style>
         .error {
+            margin-top: 1em;
             color: #ff2222;
         }
 
@@ -43,7 +44,6 @@
 </div>
 <script>
     function uploadImage(responseJSON) {
-        console.log(responseJSON);
         let formData = new FormData(document.getElementById('image-form'));
         let file = formData.get('file'); // file must be the last key
         formData.delete('file');
@@ -63,12 +63,12 @@
             body: formData
         }).then(function (response) {
             let span = document.getElementById('error');
-            if (response.ok) {
+            if (response.status === 204) {
                 let bucketUrl = 'https://s3-us-west-1.amazonaws.com/flask-serverless-123/';
                 span.innerText = 'Image successfully saved in: ' + bucketUrl + responseJSON.fields.key;
             } else {
                 let text = response.text().then(console.error);
-                span.innerText = 'An error occurred saving the image';
+                span.innerText = "An error occurred. The image can't be bigger then 1 MB";
             }
         })
     }
@@ -76,7 +76,11 @@
     function handleFileUpload() {
         let filename = document.getElementById('image').value;
         let ext = filename.split('.').pop();
-        let getPresignedUrl = window.location.href + '/presigned/?ext=' + ext;
+        let getPresignedUrl = window.location.pathname;
+        if (!getPresignedUrl.endsWith('/')) {
+            getPresignedUrl += '/'
+        }
+        getPresignedUrl += 'presigned/?ext=' + ext;
         fetch(getPresignedUrl).then(function (response) {
             if (response.ok) {
                 return response.json();
